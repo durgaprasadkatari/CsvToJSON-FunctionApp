@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "organisationId": {
+      "value": "nhg"
+    },
+      "domainId": {
+      "value": "cases"
+    },
+      "resourceInstanceRole": {
+      "value": "csvtojson"
+    },
+      "environment": {
+      "value": ""
+    },  
+    "InstrumentationKey": {
+        "value": "7d9e5bfc-ff6f-4d4d-aeb1-a044b7744138"
+    }, 
+    "storageAccountType": {
+      "value": "Standard_LRS"
+    },
+    "runtime": {
+      "value": "dotnet"
+    },
+    "resourceInstanceId": {
+      "value": "02"
+    }
+  }
+}

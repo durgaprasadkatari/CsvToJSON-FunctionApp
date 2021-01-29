@@ -1,0 +1,140 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "organisationId": {
+      "type": "string",
+      "metadata": {
+        "description": "description"
+      }
+    },
+    "domainId": {
+      "type": "string",
+      "metadata": {
+        "description": "description"
+      }
+    },
+    "resourceInstanceRole": {
+      "type": "string",
+      "metadata": {
+        "description": "description"
+      }
+    },
+    "environment": {
+      "type": "string",
+      "metadata": {
+        "description": "description"
+      }
+    },
+    "storageAccountType": {
+      "type": "string",
+      "metadata": {
+        "description": "Storage Account type"
+      }
+    },
+    "InstrumentationKey": {
+      "type": "string"
+    },
+    "runtime": {
+      "type": "string",
+      "metadata": {
+        "description": "The language worker runtime to load in the function app."
+      }
+    },
+    "resourceInstanceId": {
+      "type": "string",
+      "metadata": {
+        "description": "resouce instanceID starts with 01 and incremented for addtional resources (ie 02)."
+      }
+    }
+  },
+  "variables": {
+    "functionAppName": "[concat('uks-',parameters('domainId'),'-',parameters('resourceInstanceRole'),'-',parameters('resourceInstanceId'),'-',parameters('environment'))]",
+    "hostingPlanName": "[variables('functionAppName')]",
+    "storage-account-prefix": "[concat(parameters('organisationId'),parameters('domainId'),parameters('resourceInstanceRole'),parameters('environment'))]",
+    "uniqueString": "[uniqueString(resourceGroup().id)]",
+    "storageAccountName": "[toLower(substring(replace(concat(variables('storage-account-prefix'), variables('uniqueString'), variables('uniqueString')), '-', ''), 0, 23) )]"
+  },
+
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('storageAccountName')]",
+      "apiVersion": "2019-06-01",
+      "location": "[resourceGroup().location]",
+      "kind": "Storage",
+      "sku": {
+        "name": "[parameters('storageAccountType')]"
+      }
+    },
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2019-08-01",
+      "name": "[variables('hostingPlanName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Y1",
+        "tier": "Dynamic"
+      },
+      "properties": {
+        "name": "[variables('hostingPlanName')]",
+        "computeMode": "Dynamic"
+      }
+    },
+    {
+      "apiVersion": "2019-08-01",
+      "type": "Microsoft.Web/sites",
+      "name": "[variables('functionAppName')]",
+      "location": "[resourceGroup().location]",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "kind": "functionapp",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+      ],
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';EndpointSuffix=', environment().suffixes.storage, ';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value)]"
+            },
+            {
+              "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';EndpointSuffix=', environment().suffixes.storage, ';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value)]"
+            },
+            {
+              "name": "WEBSITE_CONTENTSHARE",
+              "value": "[toLower(variables('functionAppName'))]"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~3"
+            },
+            {
+              "name": "WEBSITE_NODE_DEFAULT_VERSION",
+              "value": "~10"
+            },
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "[parameters('runtime')]"
+            },
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[parameters('InstrumentationKey')]"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "functionAppResourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
+    }
+  }
+}

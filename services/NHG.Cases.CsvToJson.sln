@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30128.74
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0CEBE962-A241-4E98-A0CF-D8F9E7AADBD7}"
+	ProjectSection(SolutionItems) = preProject
+		..\.gitignore = ..\.gitignore
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NHG.Cases.CsvToJson.Tests", "NHG.Cases.CsvToJson.Tests\NHG.Cases.CsvToJson.Tests.csproj", "{DCFDDE2C-FB8E-4356-BFFD-7695283071FA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NHG.Cases.CsvToJson", "NHG.Cases.CsvToJson\NHG.Cases.CsvToJson.csproj", "{7994EA32-8289-4B50-A285-1E79AD9ED516}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DCFDDE2C-FB8E-4356-BFFD-7695283071FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCFDDE2C-FB8E-4356-BFFD-7695283071FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCFDDE2C-FB8E-4356-BFFD-7695283071FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCFDDE2C-FB8E-4356-BFFD-7695283071FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7994EA32-8289-4B50-A285-1E79AD9ED516}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7994EA32-8289-4B50-A285-1E79AD9ED516}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7994EA32-8289-4B50-A285-1E79AD9ED516}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7994EA32-8289-4B50-A285-1E79AD9ED516}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3F6944D5-E9D4-4410-BA83-0A25889B4F84}
+	EndGlobalSection
+EndGlobal
